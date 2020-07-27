@@ -37,12 +37,11 @@ def add_students(course_id, students):
 
 def get_students(course_id):
     """возвращает студентов определенного курса"""
-    cur.execute('select * from intermediate_Course_Stud where id_course=(%s);', (course_id, ))
-    data = (cur.fetchall())
-    for item in data:
-        id_stud = item[1]
-        get_student(id_stud)
-
+    cur.execute('''select s.student_id, s.name, s.birth, c.name from intermediate_Course_Stud as ics
+    join Student s on s.student_id = ics.id_stud
+    join Course c on c.course_id = ics.id_course where c.course_id = (%s);''', (course_id, ))
+    print(cur.fetchall())
+    return (cur.fetchall())
 
 def add_student(student):
     """Создает студента"""
